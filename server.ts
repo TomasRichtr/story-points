@@ -1,11 +1,14 @@
-const express = require('express');
-const app = express();
-const port = process.env.PORT || 3001;
+import express from 'express'
+import corsMiddleware from './server/middleware/cors.middleware'
+import routerController from './server/controllers/router.controller'
+import {DEFAULT_BE_PORT} from "./server/constants";
+import {runDbMigrations} from "./server/db/knex.db";
 
-app.get('/', (req, res) => {
-  res.send('Hello from Node.js!');
-});
+const app = express()
 
-app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
-});
+runDbMigrations()
+app.use(corsMiddleware)
+app.use(express.json())
+app.use('/', routerController)
+
+app.listen(DEFAULT_BE_PORT, () => { console.log(`Listening on http://localhost:${DEFAULT_BE_PORT}`) })

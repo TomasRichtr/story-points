@@ -1,14 +1,15 @@
 import {defineStore} from 'pinia'
 import {ref} from 'vue'
+import {User} from "../../types/user";
 
 export const useDataStore = defineStore('dataStore', () => {
   const team = ref<string>(null)
   const newTeam = ref<string>(null)
-  const teams = ref<string[]>([null, 'California', 'Colorado', 'Florida', 'Georgia', 'Texas', 'Wyoming'])
+  const teams = ref<string[]>([])
 
-  const user = ref<string>(null)
+  const user = ref<User>(null)
   const newUser = ref<string>(null)
-  const users = ref<string[]>([null, '111', '222', '333', '444', '555', '666'])
+  const users = ref<User[]>([])
 
 
   return {

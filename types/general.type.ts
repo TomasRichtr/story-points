@@ -1,8 +1,7 @@
 import { type User } from './user'
-import { type AuthType } from './auth.type'
 
 export type UnknownObject = Record<string, unknown>
 
-export type RequestResult = User | string[] | AuthType | null
+export type RequestResult = User | string[] | null | User[]
 
-export type MyFunction = (payload: UnknownObject) => Promise<RequestResult>
+export type MyFunction = (payload: never) => Promise<RequestResult>

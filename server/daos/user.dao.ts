@@ -2,8 +2,8 @@ import { type User } from '../../types/user'
 import knexDb from '../db/knex.db'
 import {TABLES} from "../enums";
 
-const getUser = async (id: string): Promise<User> => {
-  return knexDb(TABLES.Users).where({ id })
+const getUsers = async (): Promise<User[]> => {
+  return knexDb(TABLES.Users)
 }
 
 const createUser = async (user: Omit<User, 'id'>): Promise<string[]> => {
@@ -30,4 +30,4 @@ const getUserByEmail = async (email: string): Promise<User> => {
     .first()
 }
 
-export default { getUser, createUser, updateUser, deleteUser, getUserByEmail }
+export default { getUsers, createUser, updateUser, deleteUser, getUserByEmail }

@@ -1,10 +1,10 @@
 const knex = require('knex')
 
-const CONFIG = {
-  HOST: process.env.database_host || 'f80b6byii2vwv8cx.chr7pe7iynqr.eu-west-1.rds.amazonaws.com',
-  USER: process.env.database_user || 'xqbs8ync3v86eniw',
-  PASSWORD: process.env.database_password,
-  DATABASE: process.env.database || 'isvdd9uinn5y2d1v',
+export const CONFIG = {
+  HOST: process.env.database_host || 'zpj83vpaccjer3ah.chr7pe7iynqr.eu-west-1.rds.amazonaws.com',
+  USER: process.env.database_user || 'gdytklsrjs94m4p8',
+  PASSWORD: process.env.database_password || 'ip47kol8opyhw5hq',
+  DATABASE: process.env.database || 'll5tsgqfpyy5z4wk',
   PORT: process.env.database_port || 3306
 }
 
@@ -19,5 +19,9 @@ const knexDb = knex({
     charset: 'utf8mb4'
   }
 })
+
+export const runDbMigrations = async () => {
+  await knexDb.migrate.latest({directory: "../story-points/server/migrations"})
+}
 
 export default knexDb

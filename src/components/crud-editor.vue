@@ -5,7 +5,7 @@ import {storeToRefs} from "pinia";
 import {useUiStore} from "../stores/ui-store";
 
 interface Props {
-  modelValue: string
+  modelValue: Record<string, string>,
   tooltips: {
     create: string
     update: string
@@ -18,7 +18,8 @@ interface Props {
 const props = defineProps<Props>()
 
 interface Emits {
-  (eventName: "update:modelValue", entityValue: string): void
+  (eventName: "update:modelValue", entityValue: Record<string, string> | string): void
+  (eventName: "item:add"): void
 }
 
 const emit = defineEmits<Emits>()
@@ -27,14 +28,23 @@ const entityValue = computed({
   get() {
     return props.modelValue
   },
-  set(newEntityValue: string) {
+  set(newEntityValue: Record<string, string>) {
     emit("update:modelValue", newEntityValue)
+  }
+})
+
+const newEntityValue = computed({
+  get() {
+    return props.modelValue?.name
+  },
+  set(name: string) {
+    emit("update:modelValue", name)
   }
 })
 
 const {isItemEdited} = storeToRefs(useUiStore())
 
-const handleItemEdit = () => {
+const handleItemUpdate = () => {
   if (isItemEdited.value) {
     isItemEdited.value = false
     return
@@ -51,6 +61,15 @@ const handleItemDelete = () => {
 
   isItemEdited.value = false
 }
+
+const handleNewItem = () => {
+  if (isItemEdited.value) {
+    isItemEdited.value = false
+    emit("item:add")
+    return
+  }
+  isItemEdited.value = true
+}
 </script>
 
 <template>
@@ -62,7 +81,7 @@ const handleItemDelete = () => {
       variant="outlined"
       hide-details
       class="max-w-2xl"
-      v-model="entityValue"
+      v-model="newEntityValue"
       autofocus
     />
 
@@ -74,9 +93,12 @@ const handleItemDelete = () => {
       hide-details
       class="max-w-2xl"
       v-model="entityValue"
+      item-title="name"
+      item-value="id"
+      return-object
     />
 
-    <complex-btn :tooltip="tooltips.create" @button:clicked="handleItemEdit">
+    <complex-btn :tooltip="tooltips.create" @button:clicked="handleNewItem">
       <v-icon v-if="isItemEdited" icon="mdi-content-save-outline" size="x-large"/>
       <v-icon v-else icon="mdi-plus" size="x-large"/>
     </complex-btn>

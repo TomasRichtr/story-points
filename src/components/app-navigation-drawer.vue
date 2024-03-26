@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import {storeToRefs} from "pinia";
 import {useUiStore} from "../stores/ui-store";
-import {SIDEBAR_LOCATION} from "../constants/vuetify";
+import {SIDEBAR_LOCATION, SIDEBAR_WIDTH} from "../constants/vuetify";
 import {STRINGS} from "../constants/strings";
 import {ROUTES} from "../constants/routes";
 import {useDataStore} from "../stores/data-store";
@@ -18,7 +18,7 @@ const {user, team} = storeToRefs(useDataStore())
 const nameTitle = computed(() => {
   if (!user.value) return STRINGS.labels.pickUser
 
-  return `${STRINGS.navigationDrawer.name}: <b>${user.value}</b>`
+  return `${STRINGS.navigationDrawer.name}: <b>${user.value.name}</b>`
 })
 
 const teamTitle = computed(() => {
@@ -53,6 +53,7 @@ const navItems = computed(() => {
   <v-navigation-drawer
     :model-value="showSidebar"
     :location="SIDEBAR_LOCATION"
+    :width="SIDEBAR_WIDTH"
     permanent
   >
     <v-list>

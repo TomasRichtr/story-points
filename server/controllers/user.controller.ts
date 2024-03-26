@@ -1,8 +1,8 @@
 import {type User} from '../../types/user'
 import userDao from '../daos/user.dao'
 
-const getUser = async (payload: User): Promise<User> => {
-  return await userDao.getUser(payload.id as string)
+const getUsers = async (): Promise<User[]> => {
+  return await userDao.getUsers()
 }
 
 const createUser = async (payload: Omit<User, 'id'>): Promise<User> => {
@@ -26,4 +26,4 @@ const deleteUser = async (payload: User): Promise<string[]> => {
   return await userDao.deleteUser(payload.id as string)
 }
 
-export default {getUser, createUser, updateUser, deleteUser}
+export default {getUsers, createUser, updateUser, deleteUser}
