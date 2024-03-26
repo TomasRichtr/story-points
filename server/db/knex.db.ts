@@ -1,4 +1,4 @@
-const knex = require('knex')
+const knex = require('knex');
 
 export const CONFIG = {
   HOST: process.env.database_host || 'zpj83vpaccjer3ah.chr7pe7iynqr.eu-west-1.rds.amazonaws.com',
@@ -6,7 +6,7 @@ export const CONFIG = {
   PASSWORD: process.env.database_password || 'ip47kol8opyhw5hq',
   DATABASE: process.env.database || 'll5tsgqfpyy5z4wk',
   PORT: process.env.database_port || 3306
-}
+};
 
 const knexDb = knex({
   client: 'mysql',
@@ -18,10 +18,10 @@ const knexDb = knex({
     port: CONFIG.PORT,
     charset: 'utf8mb4'
   }
-})
+});
 
 export const runDbMigrations = async () => {
-  await knexDb.migrate.latest({directory: "../story-points/server/migrations"})
-}
+  await knexDb.migrate.latest({ directory: "../story-points/server/migrations" });
+};
 
-export default knexDb
+export default knexDb;

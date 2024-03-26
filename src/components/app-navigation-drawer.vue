@@ -1,31 +1,31 @@
 <script setup lang="ts">
-import {storeToRefs} from "pinia";
-import {useUiStore} from "../stores/ui-store";
-import {SIDEBAR_LOCATION, SIDEBAR_WIDTH} from "../constants/vuetify";
-import {STRINGS} from "../constants/strings";
-import {ROUTES} from "../constants/routes";
-import {useDataStore} from "../stores/data-store";
-import {computed} from "vue"
+import { storeToRefs } from "pinia";
+import { useUiStore } from "../stores/ui-store";
+import { SIDEBAR_LOCATION, SIDEBAR_WIDTH } from "../constants/vuetify";
+import { STRINGS } from "../constants/strings";
+import { ROUTES } from "../constants/routes";
+import { useDataStore } from "../stores/data-store";
+import { computed } from "vue";
 
-import {useRoute} from 'vue-router';
+import { useRoute } from 'vue-router';
 
 const route = useRoute();
 
-const {showSidebar} = storeToRefs(useUiStore())
+const { showSidebar } = storeToRefs(useUiStore());
 
-const {user, team} = storeToRefs(useDataStore())
+const { user, team } = storeToRefs(useDataStore());
 
 const nameTitle = computed(() => {
-  if (!user.value) return STRINGS.labels.pickUser
+  if (!user.value || !user.value.name) return STRINGS.labels.pickUser;
 
-  return `${STRINGS.navigationDrawer.name}: <b>${user.value.name}</b>`
-})
+  return `${STRINGS.navigationDrawer.name}: <b>${user.value.name}</b>`;
+});
 
 const teamTitle = computed(() => {
-  if (!team.value) return STRINGS.labels.pickTeam
+  if (!team.value) return STRINGS.labels.pickTeam;
 
-  return `${STRINGS.navigationDrawer.team}: <b>${team.value}</b>`
-})
+  return `${STRINGS.navigationDrawer.team}: <b>${team.value}</b>`;
+});
 
 const navItems = computed(() => {
   return [
@@ -45,8 +45,8 @@ const navItems = computed(() => {
       title: STRINGS.navigationDrawer.estimate,
       route: 'estimate',
     },
-  ]
-})
+  ];
+});
 </script>
 
 <template>
@@ -57,9 +57,12 @@ const navItems = computed(() => {
     permanent
   >
     <v-list>
-      <v-list-item v-for="item in navItems" :key="item" :active="route.name === item.route">
+      <v-list-item v-for="item in navItems"
+:key="item"
+:active="route.name === item.route"
+>
         <router-link :to="item.route">
-          <span v-html="item.title"/>
+          <span v-html="item.title" />
         </router-link>
       </v-list-item>
     </v-list>

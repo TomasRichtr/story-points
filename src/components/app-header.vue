@@ -1,16 +1,16 @@
 <script setup lang="ts">
-import {STRINGS} from "../constants/strings";
-import {HEADER_ELEVATION} from "../constants/vuetify";
-import {useRoute} from 'vue-router';
-import {ROUTES} from "../constants/routes";
-import {computed} from "vue"
+import { STRINGS } from "../constants/strings";
+import { HEADER_ELEVATION } from "../constants/vuetify";
+import { useRoute } from 'vue-router';
+import { ROUTES } from "../constants/routes";
+import { computed } from "vue";
 
 const route = useRoute();
 
 const routeName = computed(() => {
-  const routerRouteName = (route.name as string)?.replace("/", "")
-  return ROUTES[routerRouteName]?.name || ROUTES.index.name
-})
+  const routerRouteName = (route.name as string)?.replace("/", "");
+  return ROUTES[routerRouteName]?.name || ROUTES.index.name;
+});
 </script>
 
 <template>
@@ -24,8 +24,8 @@ const routeName = computed(() => {
     </v-app-bar-title>
 
 
-    <template v-slot:append>
-      <v-btn icon="mdi-dots-vertical"></v-btn>
+    <template #append>
+      <v-btn icon="mdi-dots-vertical" />
     </template>
   </v-app-bar>
 </template>

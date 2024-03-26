@@ -17,5 +17,15 @@ export const STRINGS = {
   labels: {
     pickTeam: "Pick your team",
     pickUser: "Pick your name"
+  },
+  messages: {
+    users: {
+      successCreate: "User created!",
+      errorCreate: "User creation failed!",
+      successUpdate: "User updated!",
+      errorUpdate: "User update failed!",
+      successDelete: "User deleted!",
+      errorDelete: "User delete failed!"
+    }
   }
-}
+};

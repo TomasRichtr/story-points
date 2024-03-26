@@ -7,4 +7,4 @@ export const ROUTES = {
     path: '/teams',
     name: 'teams'
   }
-}
+};

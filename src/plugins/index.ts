@@ -1,20 +1,21 @@
-/**
- * plugins/index.ts
- *
- * Automatically included in `./src/main.ts`
- */
+import vuetify from './vuetify';
+import pinia from '../stores';
+import router from '../router';
+import Toast, { PluginOptions, POSITION } from "vue-toastification";
+import type { App } from 'vue';
 
-// Plugins
-import vuetify from './vuetify'
-import pinia from '../stores'
-import router from '../router'
+const toastOptions: PluginOptions = {
+  transition: "Vue-Toastification__bounce",
+  maxToasts: 20,
+  newestOnTop: true,
+  timeout: 5000,
+  position: POSITION.BOTTOM_RIGHT
+};
 
-// Types
-import type { App } from 'vue'
-
-export function registerPlugins (app: App) {
+export function registerPlugins(app: App) {
   app
     .use(vuetify)
     .use(router)
     .use(pinia)
+    .use(Toast, toastOptions);
 }

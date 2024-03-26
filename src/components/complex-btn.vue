@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {VuetifyColor} from "../enums/vuetify";
+import { VuetifyColor } from "../enums/vuetify";
 
 interface Props {
   color?: VuetifyColor
@@ -7,21 +7,31 @@ interface Props {
   disabled?: boolean
 }
 
-const props = withDefaults(defineProps<Props>(), {color: VuetifyColor.Primary, tooltip: null, disabled: false})
+const props = withDefaults(defineProps<Props>(), { color: VuetifyColor.Primary, tooltip: null, disabled: false });
 
 interface Emits {
   (eventName: "button:clicked"): void
 }
 
-const emit = defineEmits<Emits>()
+const emit = defineEmits<Emits>();
 </script>
 
 <template>
-  <v-tooltip :text="props.tooltip" location="bottom">
-    <template v-slot:activator="{ props: tooltipProps }">
-      <v-btn variant="flat" :color="props.color" class="h-auto" v-bind="tooltipProps" :disabled="props.disabled"
-             @click="emit('button:clicked')">
-        <slot/>
+  <v-tooltip
+    :text="props.tooltip"
+    location="bottom"
+  >
+    <template #activator="{ props: tooltipProps }">
+      <v-btn
+        variant="flat"
+        :color="props.color"
+        class="h-full"
+        v-bind="tooltipProps"
+        :disabled="props.disabled"
+        height="100%"
+        @click="emit('button:clicked')"
+      >
+        <slot />
       </v-btn>
     </template>
   </v-tooltip>
