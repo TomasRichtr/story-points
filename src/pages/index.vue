@@ -1,72 +1,84 @@
-<template>
-  <page-layout>
-    <crud-editor
-      v-model="user"
-      :opts="users"
-      :tooltips="CRUD_BTNS_TOOLTIPS"
-      :label="STRINGS.labels.pickUser"
-      @item:add="handleAddUser"
-      @item:delete="handleDeleteUser"
-      @item:update="handleUpdateUser"
-    />
-  </page-layout>
-</template>
-
 <script lang="ts" setup>
-import { storeToRefs } from "pinia";
-import { useDataStore } from "../stores/data-store";
+import usersApi from "../api/users";
+import teamsApi from "../api/teams";
 import { STRINGS } from "../constants/strings";
 import { onMounted } from "vue";
-import usersApi from "../api/users";
-import { useNotifications } from "../composables/notifications";
+import { storeToRefs } from "pinia";
+import { useDataStore } from "../stores/data-store";
+import { useUsers } from "../composables/users";
+import { useTeams } from "../composables/teams";
+import { useStoryPointSets } from "../composables/storyPointSets";
 
-const { users, user } = storeToRefs(useDataStore());
+const { users, user, teams, team } = storeToRefs(useDataStore());
 
-const CRUD_BTNS_TOOLTIPS = {
+const CRUD_BTNS_TOOLTIPS_USER = {
   create: STRINGS.tooltips.createUser,
   update: STRINGS.tooltips.changeUserName,
   delete: STRINGS.tooltips.deleteUser,
 };
 
-const { notifyError, notifySuccess } = useNotifications();
-
-const handleAddUser = async () => {
-  try {
-    const newUser = await usersApi.addUser(user.value.name);
-    users.value = await usersApi.getUsers();
-    user.value = newUser;
-    notifySuccess(STRINGS.messages.users.successCreate);
-  } catch (err) {
-    notifyError(STRINGS.messages.users.errorCreate);
-    console.error(err);
-  }
+const CRUD_BTNS_TOOLTIPS_TEAM = {
+  create: STRINGS.tooltips.createTeam,
+  update: STRINGS.tooltips.changeTeamName,
+  delete: STRINGS.tooltips.deleteTeam,
 };
 
-const handleDeleteUser = async () => {
-  try {
-    await usersApi.deleteUser(user.value.id);
-    users.value = await usersApi.getUsers();
-    user.value = null;
-    notifySuccess(STRINGS.messages.users.successDelete);
-  } catch (err) {
-    notifyError(STRINGS.messages.users.errorDelete);
-    console.error(err);
-  }
+const CRUD_BTNS_TOOLTIPS_POINTS = {
+  create: STRINGS.tooltips.createStoryPoints,
+  update: STRINGS.tooltips.changeStoryPoints,
+  delete: STRINGS.tooltips.deleteStoryPoints,
 };
 
-const handleUpdateUser = async () => {
-  try {
-    const updatedUserId = await usersApi.updateUser(user.value);
-    users.value = await usersApi.getUsers();
-    user.value = { id: updatedUserId, name: user.value.name };
-    notifySuccess(STRINGS.messages.users.successUpdate);
-  } catch (err) {
-    notifyError(STRINGS.messages.users.errorUpdate);
-    console.error(err);
-  }
-};
+const { handleAddUser, handleDeleteUser, handleUpdateUser } = useUsers();
+
+const { handleAddTeam, handleDeleteTeam, handleUpdateTeam } = useTeams();
+
+const {
+  handleAddStoryPointSet,
+  handleDeleteStoryPointSet,
+  handleUpdateStoryPointSet,
+  storyPointSetParsedVal,
+  storyPointSetsRemapped
+} = useStoryPointSets();
 
 onMounted(async () => {
   users.value = await usersApi.getUsers();
+  teams.value = await teamsApi.getTeams();
 });
 </script>
+
+<template>
+  <page-layout class="flex flex-col gap-8">
+    <crud-input
+      v-model="user"
+      :opts="users"
+      :tooltips="CRUD_BTNS_TOOLTIPS_USER"
+      :label="STRINGS.labels.pickUser"
+      @item:add="handleAddUser"
+      @item:delete="handleDeleteUser"
+      @item:update="handleUpdateUser"
+    />
+    <crud-input
+      v-model="team"
+      :opts="teams"
+      :tooltips="CRUD_BTNS_TOOLTIPS_TEAM"
+      :label="STRINGS.labels.pickTeam"
+      @item:add="handleAddTeam"
+      @item:delete="handleDeleteTeam"
+      @item:update="handleUpdateTeam"
+    />
+    <crud-input
+      v-model="storyPointSetParsedVal"
+      :opts="storyPointSetsRemapped"
+      :tooltips="CRUD_BTNS_TOOLTIPS_POINTS"
+      :label="STRINGS.labels.storyPointSet"
+      @item:add="handleAddStoryPointSet"
+      @item:delete="handleDeleteStoryPointSet"
+      @item:update="handleUpdateStoryPointSet"
+    >
+      <template #inputDetails>
+        {{ STRINGS.info.storyPointSet }}
+      </template>
+    </crud-input>
+  </page-layout>
+</template>

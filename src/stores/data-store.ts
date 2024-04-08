@@ -1,23 +1,26 @@
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
 import { User } from "../../types/user";
+import { Team } from "../../types/team";
+import { StoryPointSet } from "../../types/storyPointSet";
 
 export const useDataStore = defineStore('dataStore', () => {
-  const team = ref<string>(null);
-  const newTeam = ref<string>(null);
-  const teams = ref<string[]>([]);
+  const team = ref<Team>(null);
+  const teams = ref<Team[]>([]);
 
   const user = ref<User>(null);
-  const newUser = ref<string>(null);
   const users = ref<User[]>([]);
+
+  const storyPointSet = ref<StoryPointSet>(null);
+  const storyPointSets = ref<StoryPointSet[]>([]);
 
 
   return {
     team,
-    newTeam,
     teams,
     user,
-    newUser,
-    users
+    users,
+    storyPointSets,
+    storyPointSet
   };
 });

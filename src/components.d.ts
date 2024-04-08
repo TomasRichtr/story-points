@@ -7,11 +7,12 @@ export {}
 
 declare module 'vue' {
   export interface GlobalComponents {
-    AppHeader: typeof import('./components/app-header.vue')['default']
-    AppNavigationDrawer: typeof import('./components/app-navigation-drawer.vue')['default']
-    ComplexBtn: typeof import('./components/complex-btn.vue')['default']
-    CrudEditor: typeof import('./components/crud-editor.vue')['default']
-    PageLayout: typeof import('./components/page-layout.vue')['default']
+    AppHeader: typeof import('./components/layout/app-header.vue')['default']
+    AppNavigationDrawer: typeof import('./components/layout/app-navigation-drawer.vue')['default']
+    ComplexBtn: typeof import('./components/buttons/complex-btn.vue')['default']
+    CrudInput: typeof import('./components/inputs/crud-input.vue')['default']
+    CrudInputBtns: typeof import('./components/inputs/crud-input-btns.vue')['default']
+    PageLayout: typeof import('./components/layout/page-layout.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
   }

@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { STRINGS } from "../constants/strings";
-import { HEADER_ELEVATION } from "../constants/vuetify";
+import { STRINGS } from "../../constants/strings";
+import { HEADER_ELEVATION } from "../../constants/vuetify";
 import { useRoute } from 'vue-router';
-import { ROUTES } from "../constants/routes";
+import { ROUTES } from "../../constants/routes";
 import { computed } from "vue";
 
 const route = useRoute();

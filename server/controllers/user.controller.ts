@@ -1,11 +1,12 @@
 import { type User } from '../../types/user';
 import userDao from '../daos/user.dao';
+import { UserCols } from "../enums";
 
 const getUsers = async (): Promise<User[]> => {
   return await userDao.getUsers();
 };
 
-const createUser = async (payload: Omit<User, 'id'>): Promise<User> => {
+const createUser = async (payload: Omit<User, UserCols.Id>): Promise<User> => {
   const user = {
     name: payload.name
   };

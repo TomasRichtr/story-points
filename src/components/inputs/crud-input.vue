@@ -1,8 +1,7 @@
 <script setup lang="ts">
-import { VuetifyColor } from "../enums/vuetify";
-import { computed } from "vue";
-import { storeToRefs } from "pinia";
-import { useUiStore } from "../stores/ui-store";
+import { computed, ref } from "vue";
+import { useDisplay } from "vuetify";
+import { VuetifyVariants } from "../../enums/vuetify";
 
 interface Props {
   modelValue: Record<string, string>,
@@ -19,11 +18,8 @@ const props = defineProps<Props>();
 
 interface Emits {
   (eventName: "update:modelValue", entityValue: Record<string, string>): void
-
   (eventName: "item:add"): void
-
   (eventName: "item:delete"): void
-
   (eventName: "item:update"): void
 }
 
@@ -47,11 +43,7 @@ const newEntityValue = computed({
   }
 });
 
-const isItemUpdated = computed(() => {
-  return isItemEdited.value && entityValue.value?.id
-});
-
-const { isItemEdited } = storeToRefs(useUiStore());
+const isItemEdited = ref<boolean>(false);
 
 const handleItemDelete = () => {
   if (!isItemEdited.value) {
@@ -60,6 +52,7 @@ const handleItemDelete = () => {
     return;
   }
 
+  entityValue.value = null;
   isItemEdited.value = false;
 };
 
@@ -79,84 +72,53 @@ const handleNewItemBlur = () => {
     isItemEdited.value = false;
   }
 };
+
+const { smAndDown } = useDisplay();
 </script>
 
 <template>
-  <v-row class="gap-5 flex justify-center">
+  <v-row
+    class="gap-5 flex"
+    :class="smAndDown ? 'flex-col' : 'flex-row'"
+  >
     <v-text-field
       v-if="isItemEdited"
       v-model="newEntityValue"
       :label="props.label"
       :items="props.opts"
-      variant="outlined"
-      hide-details
-      class="max-w-2xl"
+      :variant="VuetifyVariants.SoloFilled"
+      class="max-w-xl"
       autofocus
+      hide-details="auto"
       @blur="handleNewItemBlur"
       @keydown.esc="isItemEdited = false"
       @keydown.enter="handleNewItem"
-    />
+    >
+      <template #details>
+        <slot name="inputDetails" />
+      </template>
+    </v-text-field>
 
     <v-select
       v-else
       v-model="entityValue"
       :label="props.label"
       :items="props.opts"
-      variant="outlined"
+      :variant="VuetifyVariants.SoloFilled"
       hide-details
-      class="max-w-2xl"
+      class="max-w-xl"
       item-title="name"
       item-value="id"
       return-object
     />
 
-    <div class="h-auto flex gap-2">
-      <complex-btn
-        :tooltip="isItemUpdated ? tooltips.update : tooltips.create"
-        @button:clicked="handleNewItem"
-      >
-        <v-icon
-          v-if="isItemEdited"
-          icon="mdi-content-save-outline"
-          size="x-large"
-        />
-        <v-icon
-          v-else
-          icon="mdi-plus"
-          size="x-large"
-        />
-      </complex-btn>
-
-      <complex-btn
-        v-if="entityValue && !isItemEdited"
-        :color="VuetifyColor.Warning"
-        :tooltip="tooltips.update"
-        @button:clicked="isItemEdited = true"
-      >
-        <v-icon
-          icon="mdi-pen"
-          size="x-large"
-        />
-      </complex-btn>
-
-      <complex-btn
-        v-if="entityValue || isItemEdited"
-        :color="VuetifyColor.Error"
-        :tooltip="tooltips.delete"
-        @button:clicked="handleItemDelete"
-      >
-        <v-icon
-          v-if="isItemEdited"
-          icon="mdi-cancel"
-          size="x-large"
-        />
-        <v-icon
-          v-else
-          icon="mdi-trash-can-outline"
-          size="x-large"
-        />
-      </complex-btn>
-    </div>
+    <crud-input-btns
+      v-model:is-item-edited="isItemEdited"
+      :tooltips="tooltips"
+      :entity-value="entityValue"
+      @item:new="handleNewItem"
+      @item:delete="handleItemDelete"
+    />
   </v-row>
 </template>
 

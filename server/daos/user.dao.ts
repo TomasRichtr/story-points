@@ -1,18 +1,17 @@
 import { type User } from '../../types/user';
 import knexDb from '../db/knex.db';
-import { TABLES } from "../enums";
+import { Tables } from "../enums";
 
 const getUsers = async (): Promise<User[]> => {
-  return knexDb(TABLES.Users);
+  return knexDb(Tables.Users);
 };
 
-const createUser = async (user: Omit<User, 'id'>): Promise<string[]> => {
-  return knexDb('users').insert(user);
+const createUser = async (user: Omit<User, "id">): Promise<string[]> => {
+  return knexDb(Tables.Users).insert(user);
 };
 
-const updateUser = async (id: string, patch: Omit<User, 'id'>): Promise<string[]> => {
-  console.log(patch);
-  return knexDb('users')
+const updateUser = async (id: string, patch: Omit<User, "id">): Promise<string[]> => {
+  return knexDb(Tables.Users)
     .where({
       id
     })
@@ -20,15 +19,7 @@ const updateUser = async (id: string, patch: Omit<User, 'id'>): Promise<string[]
 };
 
 const deleteUser = async (id: string): Promise<string[]> => {
-  return knexDb(TABLES.Users).where({ id }).delete();
+  return knexDb(Tables.Users).where({ id }).delete();
 };
 
-const getUserByEmail = async (email: string): Promise<User> => {
-  return knexDb(TABLES.Users)
-    .where({
-      email
-    })
-    .first();
-};
-
-export default { getUsers, createUser, updateUser, deleteUser, getUserByEmail };
+export default { getUsers, createUser, updateUser, deleteUser };

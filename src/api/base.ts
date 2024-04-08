@@ -10,7 +10,7 @@ class BaseApi {
     return error;
   }
 
-  requestGet(path, config) {
+  requestGet(path, config?) {
     return client.get(path, config)
       .then(response => response)
       .catch(err => {

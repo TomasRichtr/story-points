@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { VuetifyColor } from "../enums/vuetify";
+import {VuetifyColor, VuetifyVariants} from "../../enums/vuetify";
 
 interface Props {
   color?: VuetifyColor
@@ -23,12 +23,12 @@ const emit = defineEmits<Emits>();
   >
     <template #activator="{ props: tooltipProps }">
       <v-btn
-        variant="flat"
         :color="props.color"
         class="h-full"
         v-bind="tooltipProps"
         :disabled="props.disabled"
         height="100%"
+        :variant="VuetifyVariants.Tonal"
         @click="emit('button:clicked')"
       >
         <slot />
